@@ -4,9 +4,6 @@
 
 
 
-
-
-
 $(document).ready(function() {
 
     /* 
