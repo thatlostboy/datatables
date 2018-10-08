@@ -51,25 +51,34 @@ $(document).ready(function() {
         "order": [[ 3, "asc" ]]
     });
 
-} );
-
-
-/*
-// https://datatables.net/examples/data_sources/ajax
-$(document).ready(function() {
-    $('#productlist').DataTable(
-        {"ajax": './js/productlist.txt'}
-    );
-});
-*/
-
-/*
-// https://datatables.net/examples/basic_init/scroll_y.html
-$(document).ready(function () {
-    $('#productlist').DataTable({
+        // same as above but added in sort
+    // https://datatables.net/examples/basic_init/scroll_y.html
+    // on datatables2.html sample
+    // [3, "asc"] says to use the 4th column (array index start at 0) and 
+    // show in ascending ordr
+    $('#ajaxapicall').DataTable({
+        "ajax": {
+            url: "http://127.0.0.1:8080/api/products",
+            method: 'GET', 
+        },
         "scrollY": "500px",
         "scrollCollapse": true,
-        "paging": false
+        "paging": false, 
+        "order": [[ 3, "asc" ]]
     });
-});
-*/
+
+
+    // this is that test button on datatables3.html page
+    //  I was testing to make sure it works
+
+    $("#testajaxget").on("click", outputData)
+
+    function outputData() {
+        $.ajax({ url: "http://127.0.0.1:8080/api/products", method: "GET" })
+        .then(function(tableData){
+            console.log(tableData);
+        });
+    }
+
+
+} );
