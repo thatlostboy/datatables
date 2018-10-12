@@ -4,7 +4,7 @@
 
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     /* 
         for datatables, the ajax option assumes the return value is in this format
@@ -16,7 +16,7 @@ $(document).ready(function() {
 
     // https://datatables.net/examples/basic_init/zero_configuration.html
     // on datatables.html sample
-    $('#productlist').DataTable();
+    $('#nodatatables_productlist').DataTable();
 
     // ajax sourced from TXT file
     // https://datatables.net/examples/data_sources/ajax
@@ -40,15 +40,16 @@ $(document).ready(function() {
     // on datatables2.html sample
     // [3, "asc"] says to use the 4th column (array index start at 0) and 
     // show in ascending ordr
-    $('#ajaxloadbasicscrollsort').DataTable({
+    var table = $('#ajaxloadbasicscrollsort').DataTable({
         "ajax": './js/productlist.txt',
         "scrollY": "500px",
         "scrollCollapse": true,
-        "paging": false, 
-        "order": [[ 3, "asc" ]]
+        "paging": false,
+        "order": [[3, "asc"]],
+        "select": "on"
     });
 
-        // same as above but added in sort
+    // same as above but added in sort
     // https://datatables.net/examples/basic_init/scroll_y.html
     // on datatables2.html sample
     // [3, "asc"] says to use the 4th column (array index start at 0) and 
@@ -56,12 +57,12 @@ $(document).ready(function() {
     $('#ajaxapicall').DataTable({
         "ajax": {
             url: "http://127.0.0.1:8080/api/products",
-            method: 'GET', 
+            method: 'GET',
         },
         "scrollY": "500px",
         "scrollCollapse": true,
-        "paging": false, 
-        "order": [[ 3, "asc" ]]
+        "paging": false,
+        "order": [[3, "asc"]]
     });
 
 
@@ -72,10 +73,24 @@ $(document).ready(function() {
 
     function outputData() {
         $.ajax({ url: "http://127.0.0.1:8080/api/products", method: "GET" })
-        .then(function(tableData){
-            console.log(tableData);
-        });
+            .then(function (tableData) {
+                console.log(tableData);
+            });
     }
 
 
-} );
+
+    // testing selecting
+    $('#ajaxloadbasicscrollsort tbody').on('click', 'tr', function () {
+        let productInfo = table.row(this).data();    
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        }
+        else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+        alert(productInfo)
+    });
+
+});
